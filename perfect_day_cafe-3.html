@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☕ The Perfect Day Café</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap');
+:root{--pink:#f8c9d9;--cream:#fff8ed;--brown:#704f45;--rose:#e991aa;--sage:#b9d8c1;--yellow:#ffe6a7;--lav:#d8c9ef}
+*{box-sizing:border-box} body{margin:0;background:#f7dfdf;color:var(--brown);font-family:Quicksand,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.25;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:18px 18px}
+.app{max-width:1100px;margin:auto;padding:18px}.cafe{background:var(--cream);border:4px solid #fff;border-radius:35px;box-shadow:0 15px 45px #9b687533;overflow:hidden;min-height:calc(100vh - 36px)}
+header{background:linear-gradient(135deg,#f7bfd2,#ffe7d1);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-family:"Baloo 2";font-size:30px;font-weight:700}.logo small{display:block;font:600 13px Quicksand}
+.badge{background:#fff9;border-radius:999px;padding:10px 15px;font-weight:700}
+main{padding:30px}.screen{display:none}.screen.active{display:block}.center{text-align:center}
+h1,h2,h3{font-family:"Baloo 2";margin:.2em 0} h1{font-size:42px} h2{font-size:32px}
+p{line-height:1.6}.btn{border:0;background:var(--rose);color:#fff;padding:13px 22px;border-radius:18px;font:700 15px Quicksand;cursor:pointer;box-shadow:0 5px 0 #c66e88;transition:.15s}.btn:hover{transform:translateY(-2px)}.btn.secondary{background:#b5d4be;box-shadow:0 5px 0 #82ae91;color:#4b654f}.btn.light{background:#fff;color:var(--brown);box-shadow:0 4px 0 #ead7cf;border:2px solid #f1ddd6}
+.teddy-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin:25px 0}.teddy{background:#fff;border:3px solid transparent;border-radius:25px;padding:16px;cursor:pointer;text-align:center}.teddy:hover,.teddy.selected{border-color:var(--rose);transform:translateY(-4px)}
+.bear{font-size:70px;filter:drop-shadow(0 5px 3px #0001)}.bow{font-size:25px}.card{background:#fff;border-radius:25px;padding:24px;box-shadow:0 8px 25px #8d5c4c12;margin:18px 0}
+.question{margin:20px 0}.question label{font-weight:700;display:block;margin-bottom:9px}.options{display:flex;flex-wrap:wrap;gap:9px}.option{background:#fff7fa;border:2px solid #f0d4dc;border-radius:15px;padding:10px 14px;cursor:pointer}.option.chosen{background:#f8c9d9;border-color:#dc849e}
+input,select{width:100%;padding:13px;border:2px solid #ead6d0;border-radius:14px;font:600 15px Quicksand;background:#fff}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.cafe-scene{background:linear-gradient(#dff0f4 0 45%,#ead2ba 45%);border-radius:28px;padding:25px;position:relative;overflow:hidden}.decor{font-size:30px;letter-spacing:10px}.counter{background:#b77c61;border-radius:20px;padding:20px;margin-top:25px}.drink{font-size:100px}.result{text-align:center;background:#fff;border-radius:25px;padding:25px;border:3px dashed #e8a0b5}
+.cookie{font-size:100px;cursor:pointer;animation:wobble 1.2s infinite alternate}@keyframes wobble{to{transform:rotate(5deg) scale(1.05)}}.quote{background:#fff4cf;border-radius:20px;padding:20px;font-family:"Baloo 2";font-size:23px}
+.flower-grid{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}.flower{background:#fff;border-radius:18px;padding:13px;text-align:center;min-width:82px}.flower b{display:block;font-size:35px}
+.stickers{position:fixed;right:15px;bottom:15px;font-size:25px;display:flex;gap:7px}.tiny{font-size:12px;color:#9b7770}.progress{height:10px;background:#f0ded7;border-radius:99px;overflow:hidden}.progress i{display:block;height:100%;background:#e991aa;width:0}
+footer{text-align:center;padding:5px 20px 25px;color:#a7867e;font-size:12px}
+@media(max-width:700px){.teddy-grid{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}h1{font-size:34px}main{padding:20px}}
+</style>
+</head>
+<body>
+<div class="app"><div class="cafe">
+<header><div class="logo">☕ The Perfect Day Café <small>✨ little moments, made just for you ✨</small></div><div class="badge" id="hello">🐻 Welcome!</div></header>
+<main>
+<section id="login" class="screen active center">
+<div class="cafe-scene"><div class="decor">🌷 ☁️ 🧸 🧁 🌷</div><h1>Welcome to your happy little café!</h1>
+<p>Every teddy bear has a perfect day hiding in their heart. Let's discover yours. 💗</p>
+<div class="card"><label>Your café name</label><input id="name" placeholder="e.g. Mia" maxlength="20">
+<br><br><label>Your email <span class="tiny">(used to remember your café on this device)</span></label>
+<input id="email" type="email" placeholder="you@example.com" maxlength="100">
+<br><br><button class="btn" onclick="goBears()">Enter the Café ☕</button></div></div>
+</section>
+
+<section id="bears" class="screen center"><h2>Choose your teddy bear 🧸</h2><p>Pick the little friend who feels most like you!</p>
+<div class="teddy-grid">
+<div class="teddy" onclick="pickBear(this,'Honey 🐻🎀')"><div class="bear">🧸</div><div class="bow">🎀</div><b>Honey</b></div>
+<div class="teddy" onclick="pickBear(this,'Berry 🧸🌸')"><div class="bear">🧸</div><div class="bow">🌸</div><b>Berry</b></div>
+<div class="teddy" onclick="pickBear(this,'Mochi 🧸💜')"><div class="bear">🧸</div><div class="bow">🎀</div><b>Mochi</b></div>
+<div class="teddy" onclick="pickBear(this,'Toffee 🧸💛')"><div class="bear">🧸</div><div class="bow">🎀</div><b>Toffee</b></div>
+</div><button class="btn" onclick="startPerfect()">That's my bear! 💕</button></section>
+
+<section id="setup" class="screen"><div class="card"><div class="progress"><i id="prog"></i></div><h2>Let's build your Perfect Day ✨</h2><p>These answers become your little café recipe for happiness.</p><div id="setupQs"></div><button class="btn" onclick="savePerfect()">Save my Perfect Day 🌷</button></div></section>
+
+<section id="daily" class="screen"><div class="card"><div class="progress"><i style="width:100%"></i></div><h2 id="dailyTitle">Good morning! ☀️</h2><p>Tell your teddy about today. No answer is wrong. 💗</p><div id="dailyQs"></div><button class="btn" onclick="checkDay()">Visit the Café ☕</button></div></section>
+
+<section id="experience" class="screen center">
+<div class="cafe-scene"><div class="decor">☁️ ✨ 🧸 ☕ 🌷</div>
+<h2 id="experienceTitle">Your teddy's little adventure! 🧸</h2>
+<p id="experienceIntro"></p>
+<div class="card"><div id="teddyStage" style="min-height:190px"></div><h3 id="experienceStep"></h3><p id="experienceText"></p>
+<button class="btn" id="nextExperience" onclick="nextExperience()">Next little moment 💗</button></div>
+<div class="progress"><i id="experienceProgress"></i></div>
+</div>
+</section>
+
+<section id="result" class="screen center"><div class="result"><div id="resultContent"></div></div><br><button class="btn secondary" onclick="flowers()">Make Someone's Day Better 💐</button></section>
+
+<section id="flowers" class="screen"><div class="card center"><h2>A Bouquet For Someone Special 💐</h2><p>Type their name and every letter will bloom into a different flower.</p><input id="friend" placeholder="Someone's name"><br><br><button class="btn" onclick="makeBouquet()">Grow the bouquet 🌱</button><div id="bouquet"></div><br><button class="btn light" onclick="dailyAgain()">Back to my café ☕</button></div></section>
+</main>
+<footer>Made with warm cocoa, tiny bows & a little bit of magic ✨</footer>
+</div></div>
+<div class="stickers">🍓 ✨ 🐾 💌 🧁</div>
+<script>
+const qs=[
+['weather','What would the weather be on your perfect day?',['☀️ Sunny','🌧️ Rainy','☁️ Cloudy','❄️ Snowy','🌈 Rainbow']],
+['mood','What mood would you love to have?',['😊 Happy','😌 Calm','🥳 Excited','🌷 Peaceful','💪 Confident']],
+['colour','What colour feels like your perfect day?',['🌸 Pink','💙 Blue','💛 Yellow','💜 Purple','💚 Green']],
+['wake','What time would you want to wake up?',['6:00 AM','7:00 AM','8:00 AM','9:00 AM','10:00 AM']],
+['breakfast','What would you have for breakfast?',['🥞 Pancakes','🥐 Croissant','🍳 Eggs & toast','🍓 Fruit bowl','🧇 Waffles']],
+['out','Would you go out?',['🌳 Yes, outdoors','🏠 Cozy at home','🛍️ A little adventure','☕ Café hopping']],
+['activity','What would you most want to do?',['📚 Read','🎨 Create','🎮 Play','🚶 Explore','🎬 Watch something cozy']]
+];
+let state={name:'',bear:'',perfect:null};
+
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function goBears(){
+ let n=document.getElementById('name').value.trim();
+ let e=document.getElementById('email').value.trim().toLowerCase();
+ if(!n){alert('Please enter your café name 💗');return}
+ if(!e || !e.includes('@') || !e.includes('.') || e.startsWith('@') || e.endsWith('@')){alert('Please enter a valid email 💌');return}
+ let saved=localStorage.getItem('perfectCafe_'+e);
+ if(saved){
+   state=JSON.parse(saved);
+   state.email=e;
+   document.getElementById('hello').textContent='🐻 '+state.name;
+   document.getElementById('name').value=state.name;
+   document.getElementById('email').value=e;
+   if(state.completedToday===todayKey()){alert('Your café is already complete for today! 🌷 Come back tomorrow for a fresh check-in.'); return;}
+   show('daily'); renderQs('dailyQs'); document.getElementById('dailyTitle').textContent='Welcome back, '+state.name+'! 🌷'; return;
+ }
+ state.name=n; state.email=e; document.getElementById('hello').textContent='🐻 '+n; show('bears')
+}
+function pickBear(el,b){document.querySelectorAll('.teddy').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');state.bear=b}
+function startPerfect(){if(!state.bear){alert('Choose your teddy first! 🧸');return}renderQs('setupQs');show('setup')}
+function renderQs(id,values={}){let box=document.getElementById(id);box.innerHTML='';qs.forEach((q,i)=>{let d=document.createElement('div');d.className='question';d.innerHTML='<label>'+(i+1)+'. '+q[1]+'</label><div class="options">'+q[2].map(o=>`<span class="option ${values[q[0]]===o?'chosen':''}" data-v="${o}" onclick="choose(this)">${o}</span>`).join('')+'</div>';box.appendChild(d)})}
+function choose(el){el.parentElement.querySelectorAll('.option').forEach(x=>x.classList.remove('chosen'));el.classList.add('chosen')}
+function collect(id){let out={};document.querySelectorAll('#'+id+' .question').forEach((d,i)=>{let c=d.querySelector('.chosen');out[qs[i][0]]=c?c.dataset.v:''});return out}
+function todayKey(){let d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function savePerfect(){
+ let a=collect('setupQs');
+ if(Object.values(a).some(x=>!x)){alert('Answer every little question first 🌷');return}
+ state.perfect=a; state.completedDate=null; state.todayAnswers=null;
+ localStorage.setItem('perfectCafe_'+state.email,JSON.stringify(state));
+ document.getElementById('dailyTitle').textContent='Your new day begins, '+state.name+'! ☀️';
+ renderQs('dailyQs'); show('daily')
+}
+function load(){
+ let keys=Object.keys(localStorage).filter(k=>k.startsWith('perfectCafe_'));
+ if(keys.length){ 
+   try{
+    state=JSON.parse(localStorage.getItem(keys[0]));
+    document.getElementById('name').value=state.name||'';
+    document.getElementById('email').value=state.email||'';
+    document.getElementById('hello').textContent='🐻 '+(state.name||'Welcome!');
+    return true;
+   }catch(e){}
+ }
+ return false
+}
+function checkDay(){
+ let a=collect('dailyQs');
+ if(Object.values(a).some(x=>!x)){alert('Tell your teddy about every part of today 💕');return}
+ if(state.completedDate===todayKey()){alert('You already finished today! 🌷 Come back tomorrow.');return}
+ state.todayAnswers=a;
+ state.matchCount=qs.filter(q=>a[q[0]]===state.perfect[q[0]]).length;
+ state.experienceIndex=0;
+ localStorage.setItem('perfectCafe_'+state.email,JSON.stringify(state));
+ startExperience();
+}
+function teddyEmoji(){return '🧸🎀'}
+function startExperience(){
+ document.getElementById('experienceIntro').textContent='Your teddy is going to recreate the little moments you told the café about today. Watch them go through your day! ✨';
+ document.getElementById('experienceTitle').textContent=state.name+"'s teddy's day 🧸";
+ renderExperience();
+ show('experience');
+}
+function renderExperience(){
+ const a=state.todayAnswers, steps=[
+  ['weather','🌤️','The weather','Your teddy looks outside and experiences '+a.weather+'.'],
+  ['mood','😊','The mood','Your teddy carries that '+a.mood+' feeling through the day.'],
+  ['colour','🎨','The colour','Everything around your teddy feels touched by '+a.colour+'.'],
+  ['wake','⏰','Wake-up time','Your teddy wakes up at '+a.wake+' and stretches under the blankets.'],
+  ['breakfast','🥞','Breakfast','Your teddy sits down and enjoys '+a.breakfast+'. Yum!'],
+  ['out','👜','Going out','Your teddy follows your plan: '+a.out+'.'],
+  ['activity','🌟','Favourite moment','Your teddy spends time '+a.activity.toLowerCase()+'. What a sweet little day!']
+ ];
+ let i=state.experienceIndex, s=steps[i];
+ document.getElementById('teddyStage').innerHTML='<div style="font-size:100px;animation:wobble .8s infinite alternate">'+teddyEmoji()+'</div>';
+ document.getElementById('experienceStep').textContent=s[2]+' '+s[1];
+ document.getElementById('experienceText').textContent=s[3];
+ document.getElementById('experienceProgress').style.width=((i+1)/steps.length*100)+'%';
+ document.getElementById('nextExperience').textContent=i===steps.length-1?'Finish my day 🌙':'Next little moment 💗';
+}
+function nextExperience(){
+ if(state.experienceIndex<6){state.experienceIndex++;renderExperience();return}
+ finishDay();
+}
+function finishDay(){
+ state.completedDate=todayKey();
+ localStorage.setItem('perfectCafe_'+state.email,JSON.stringify(state));
+ let matches=state.matchCount, good=matches>=5;
+ let html=good?`<div class="drink">☕💗</div><h2>You did it! 🎉</h2><p>Your teddy experienced your whole day and you matched <b>${matches}/${qs.length}</b> parts of your perfect day.</p><p>Your personalised café special is ready: <b>${state.perfect.colour}-dream drink</b> ✨</p>`:`<div class="cookie">🍪</div><h2>What a day! 🌷</h2><p>Your teddy experienced everything you did today. You matched <b>${matches}/${qs.length}</b> parts of your perfect day.</p><p>Now your little fortune cookie has a message waiting for you.</p><div id="cookieArea"><button class="btn" onclick="breakCookie()">Crack it open! 🍪</button></div>`;
+ html+=`<div class="quote">🎀 Teddy says: “You made it through today, and that is worth celebrating!”<br><br>🌙 The café is closed for you now. Come back <b>tomorrow</b> for your next little day. ☀️</div><br><button class="btn secondary" onclick="flowers()">Make Someone's Day Better 💐</button>`;
+ document.getElementById('resultContent').innerHTML=html; show('result');
+}
+function breakCookie(){let quotes=['Small steps still count. 🌱','You deserve gentle days and happy moments. 💗','You do not have to be perfect to have a beautiful day. 🌷','There is something lovely waiting in ordinary moments. ☁️','Be proud of yourself for making it through today. ✨'];let q=quotes[Math.floor(Math.random()*quotes.length)];document.getElementById('cookieArea').innerHTML='<div class="quote">💌 '+q+'</div>'}
+function flowers(){show('flowers')}
+const flowersMap=['🌷','🌹','🌻','🌼','🌸','💐','🪻','🌺','🌷','🌹','🌻','🌼','🌸','💐','🪻','🌺','🌷','🌹','🌻','🌼','🌸','💐'];
+function makeBouquet(){let n=document.getElementById('friend').value.trim();if(!n){alert('Give your bouquet a name 💌');return}let letters=[...n];let flowerText=letters.map((l,i)=>flowersMap[i%flowersMap.length]+' '+l.toUpperCase()).join('  ');
+let message='💐 A little Perfect Day Café bouquet for '+n+'! '+flowerText+'\\n\\nJust because you deserve a brighter day! ✨';
+document.getElementById('bouquet').innerHTML='<div class="flower-grid">'+letters.map((l,i)=>`<div class="flower"><b>${flowersMap[i%flowersMap.length]}</b><strong>${l.toUpperCase()}</strong></div>`).join('')+'</div><div class="quote">💌 A little bouquet for <b>'+n+'</b>—just because they deserve a brighter day!</div><br><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn" onclick="shareWhatsApp()">Send on WhatsApp 💚</button><button class="btn secondary" onclick="shareEmail()">Send by Email 💌</button></div>'; window.bouquetMessage=message;}
+function shareWhatsApp(){
+ let text=encodeURIComponent(window.bouquetMessage||'💐 A little bouquet from The Perfect Day Café!');
+ window.open('https://wa.me/?text='+text,'_blank');
+}
+function shareEmail(){
+ let subject=encodeURIComponent('💐 A little bouquet from The Perfect Day Café');
+ let body=encodeURIComponent(window.bouquetMessage||'💐 A little bouquet from The Perfect Day Café!');
+ window.location.href='mailto:?subject='+subject+'&body='+body;
+}
+function dailyAgain(){renderQs('dailyQs');document.getElementById('dailyTitle').textContent='A fresh day at the café ☀️';show('daily')}
+if(load()){
+ if(state.perfect && state.email && state.completedDate!==todayKey()){
+   // Returning user: daily check-in will appear after entering the café.
+ }
+} 
+</script>
+</body>
+</html>
